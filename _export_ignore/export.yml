@@ -1,0 +1,79 @@
+test_require:
+  - "@require"
+  - "bitwes/Gut@v9.7.1"
+  - "godot-gdunit-labs/gdUnit4@v6.2.3"
+  - "brohd11/godot-util-package@v0.2.0"
+test:
+  commands:
+    - name: clean_reports
+      script: res://addons/gdpackage_ci_test/_export_ignore/test/clean_reports.gd
+    - name: gut
+      script: res://addons/gut/gut_cmdln.gd
+      args:
+        - "-gconfig="
+        - "-gdir=res://addons/gdpackage_ci_test/_export_ignore/test/gut"
+        - "-ginclude_subdirs"
+        - "-gexit"
+        - "-gdisable_colors"
+        - "-gjunit_xml_file=res://addons/gdpackage_ci_test/_export_ignore/test/reports/gut.xml"
+    - name: gdunit4
+      script: res://addons/gdUnit4/bin/GdUnitCmdTool.gd
+      args:
+        - "-a"
+        - "res://addons/gdpackage_ci_test/_export_ignore/test/gdunit4"
+        - "--ignoreHeadlessMode"
+        - "-c"
+        - "-rd"
+        - "res://addons/gdpackage_ci_test/_export_ignore/test/reports/gdunit4"
+        - "-rc"
+        - "1"
+    - name: verify_reports
+      script: res://addons/gdpackage_ci_test/_export_ignore/test/verify_reports.gd
+export_root: "res://addons/gdpackage_ci_test/_export_ignore/exports"
+plugin_folder: "GdpackageCiTest{{version=res://addons/gdpackage_ci_test}}"
+pre_script: ""
+post_script: ""
+options:
+  overwrite: true
+  include_uid: true
+  include_import: true
+  ignore_src: false
+  use_tag_in_cfg: true
+  include_min_version: true
+  move_global_files: false
+  include_docs: true
+  include_project_license: false
+  parser_settings:
+    use_relative_paths: false
+    backport_target: 100
+    parse_cs:
+      namespace_rename: {}
+    parse_gd:
+      replace_editor_interface: false
+      optimizer:
+        struct_mode: tagged
+        inline_mode: tagged
+        aggressive: false
+        debug_tags: false
+        enabled: false
+      class_rename_ignore: []
+      backport_string_renames: {}
+    parse_tscn: {}
+    parse_tres: {}
+exports:
+  -
+    source: "res://addons/gdpackage_ci_test"
+    export_name: "gdpackage-ci-test{{version=res://addons/gdpackage_ci_test}}"
+    export_folder: addons/gdpackage_ci_test
+    exclude:
+      directories:
+        - "res://addons/gdpackage_ci_test/_export_ignore"
+      file_extensions: []
+      files: []
+    other_transfers: []
+    parser_overide_settings:
+      parse_cs: {}
+      parse_gd: {}
+      parse_tscn: {}
+      parse_tres: {}
+    remote_dir: "res://addons/gdpackage_ci_test/src/remote"

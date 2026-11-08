@@ -1,0 +1,51 @@
+name: framework integration
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  aggregate:
+    uses: brohd11/godot-gdpackage/.github/workflows/package-test.yml@main
+    with:
+      godot-versions: '["4.7-stable"]'
+      toolchain-version: "0.12.0"
+
+  scenarios:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {mode: direct, godot: "4.6.3-stable"}
+          - {mode: direct, godot: "4.7-stable"}
+          - {mode: gut, godot: "4.7-stable"}
+          - {mode: gdunit4, godot: "4.7-stable"}
+    name: ${{ matrix.mode }} (${{ matrix.godot }})
+    env:
+      GH_TOKEN: ${{ github.token }}
+      WS: ${{ github.workspace }}/ws
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: pkg
+      - uses: brohd11/godot-gdpackage/.github/actions/setup@main
+        with:
+          godot-version: ${{ matrix.godot }}
+          toolchain-version: "0.12.0"
+      - name: Verify dependency and failure behavior
+        env:
+          SCENARIO: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          python3 pkg/_export_ignore/test/ci_check.py "$SCENARIO" --project "$WS" --toolchain-dir "$TOOLCHAIN_DIR" \
+            2>&1 | tee "$RUNNER_TEMP/scenario.log"
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: scenario-${{ matrix.mode }}-${{ matrix.godot }}
+          path: ${{ runner.temp }}/scenario.log
