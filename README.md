@@ -2,6 +2,9 @@
 
 This plugin proves that GDPackage can fetch test dependencies and run standard GUT and GDUnit4
 CLI suites in a minimal Godot project. Its editor plugin has no UI or runtime dependencies.
+The framework suites live in `src/` beside `labels.gd`; `labels_native_test.gd` covers the same
+code with GDPackage's native runner. Default `ignore_tests` filtering keeps all three suites out
+of release exports while retaining `labels.gd`.
 
 The export configuration pins GUT 9.7.1, GDUnit4 6.2.3, and the declaration-only
 `godot-util-package@v0.2.0` under `test_require`. That last package brings in `util_r`, `sugar`,
@@ -18,9 +21,11 @@ The configured commands clean old reports, run both frameworks, then verify that
 all five expected tests. Saved framework settings and enabled editor plugins are unnecessary.
 GDUnit4's headless override is appropriate here because these tests do not simulate UI input.
 
-GitHub Actions uses GDPackage 0.12.0. The aggregate fixture runs on Godot 4.7 because its utility
-sources require that version. A direct `util_r` scenario runs on 4.6.3 and 4.7, with three tests
-per framework; it pins GUT 9.6.1 on Godot 4.6 and 9.7.1 on Godot 4.7. Two negative scenarios set `GDPACKAGE_CI_FAIL` to `gut` or `gdunit4`, require the
+GitHub Actions uses GDPackage 0.12.0. The aggregate fixture runs on Godot 4.7 because it pins
+GUT 9.7.1, whose supported engine version is 4.7. The full utility bundle also passes on Godot
+4.6.3 with GUT 9.6.1 and the same GDUnit4 6.2.3. A direct `util_r` scenario runs on 4.6.3 and
+4.7, with three tests per framework; it pins GUT 9.6.1 on Godot 4.6 and 9.7.1 on Godot 4.7.
+Two negative scenarios set `GDPACKAGE_CI_FAIL` to `gut` or `gdunit4`, require the
 intended assertion failure and framework exit code, and verify that the other framework and
 report checks still complete. Expected failures keep those verification jobs green.
 

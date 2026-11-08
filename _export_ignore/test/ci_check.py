@@ -33,7 +33,7 @@ def main():
             if version.startswith("4.6."):
                 # GUT publishes separate release lines for Godot 4.6 and 4.7.
                 config.write_text(config.read_text().replace("bitwes/Gut@v9.7.1", "bitwes/Gut@v9.6.1"))
-            for suite in [tree / "_export_ignore/test/gut/test_utilities.gd", tree / "_export_ignore/test/gdunit4/utilities_test.gd"]:
+            for suite in [tree / "src/test_labels.gd", tree / "src/labels_test.gd"]:
                 text = re.sub(r"^const (SugarLib|Sweets) = .*\n", "", suite.read_text(), flags=re.MULTILINE)
                 text = re.sub(r"\nfunc test_(sugar|sweet_ui)\(\) -> void:\n.*?(?=\nfunc |\Z)", "\n", text, flags=re.DOTALL)
                 suite.write_text(text)

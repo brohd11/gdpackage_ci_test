@@ -1,12 +1,13 @@
 extends GdUnitTestSuite
 
+const Labels = preload("labels.gd")
 const UString = preload("res://addons/_lib/util_r/src/string/u_string.gd")
 const SugarLib = preload("res://addons/_lib/sugar/src/sugar.gd")
 const Sweets = preload("res://scripts/sweet_ui/generated/sweets.gd")
 
 
 func test_util_r() -> void:
-	assert_str(UString.dot_join("utility", "test")).is_equal("utility.test")
+	assert_str(Labels.qualify(UString.dot_join("utility", "test"))).is_equal("fixture.utility.test")
 
 
 func test_sugar() -> void:

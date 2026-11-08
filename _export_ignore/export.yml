@@ -11,7 +11,7 @@ test:
       script: res://addons/gut/gut_cmdln.gd
       args:
         - "-gconfig="
-        - "-gdir=res://addons/gdpackage_ci_test/_export_ignore/test/gut"
+        - "-gdir=res://addons/gdpackage_ci_test/src"
         - "-ginclude_subdirs"
         - "-gexit"
         - "-gdisable_colors"
@@ -20,7 +20,7 @@ test:
       script: res://addons/gdUnit4/bin/GdUnitCmdTool.gd
       args:
         - "-a"
-        - "res://addons/gdpackage_ci_test/_export_ignore/test/gdunit4"
+        - "res://addons/gdpackage_ci_test/src"
         - "--ignoreHeadlessMode"
         - "-c"
         - "-rd"
