@@ -65,15 +65,3 @@ exports:
     source: "res://addons/gdpackage_ci_test"
     export_name: "gdpackage-ci-test{{version=res://addons/gdpackage_ci_test}}"
     export_folder: addons/gdpackage_ci_test
-    exclude:
-      directories:
-        - "res://addons/gdpackage_ci_test/_export_ignore"
-      file_extensions: []
-      files: []
-    other_transfers: []
-    parser_overide_settings:
-      parse_cs: {}
-      parse_gd: {}
-      parse_tscn: {}
-      parse_tres: {}
-    remote_dir: "res://addons/gdpackage_ci_test/src/remote"
